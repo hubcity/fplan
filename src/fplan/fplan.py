@@ -180,9 +180,9 @@ def solve(args):
         # set spending to a fixed value
         # we'll minimize taxes later on
         row = [0] * nvars 
-        row[0] = 1
-        AE += [row]
-        be += [float(args.spend)]
+        row[0] = -1
+        A += [row]
+        b += [-1 * float(args.spend)]
         
 
     if not args.sepp:
@@ -574,7 +574,9 @@ def solve(args):
                                  method="highs",
                                  bounds=bounds, 
                                  integrality=integrality, 
-                                 options={"disp": args.verbose, "time_limit": 600})
+                                 options={'disp': args.verbose, 
+                                          'time_limit': 600,
+                                          'presolve': args.spend is None})
     if res.status > 1:
         print(res)
         exit(1)
