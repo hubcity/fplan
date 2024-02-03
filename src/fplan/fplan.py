@@ -336,7 +336,11 @@ def solve(args):
             row[n_cg_taxtable+idx*cg_vper+0] = 1
             A += [row]
             b += [M]
-#            b_l += [-M]
+            
+            row = [0] * nvars 
+            row[n_cg_taxtable+idx*cg_vper+0] = -1
+            A += [row]
+            b += [M]
 
             row = [0] * nvars
             row[n_cg_taxtable+idx*cg_vper+2] = 1
