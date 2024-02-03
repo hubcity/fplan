@@ -172,9 +172,9 @@ def solve(args):
         # set spending to a fixed value
         # we'll minimize taxes later on
         row = [0] * nvars 
-        row[0] = 1
-        AE += [row]
-        be += [float(args.spend)]
+        row[0] = -1
+        A += [row]
+        b += [-1 * float(args.spend)]
         
 
     if not args.sepp:
@@ -433,7 +433,8 @@ def solve(args):
         print("Num vars: ", len(c))
         print("Num contraints: ", len(b))
     res = scipy.optimize.linprog(c, A_ub=A, b_ub=b, A_eq=AE, b_eq=be, method="highs-ipm",
-                                 options={"disp": args.verbose})
+                                 options={'disp': args.verbose,
+                                          'presolve': args.spend is None})
     if res.success == False:
         print(res)
         exit(1)
